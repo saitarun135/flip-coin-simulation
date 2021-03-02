@@ -1,28 +1,36 @@
 #!/bin/bash 
-
-echo  "Enter how many times to flip a coin :" 
-read num
+target_count=21;
 headCount=0;
 tailCount=0;
- 		
-		for ((i=1; i<=$num; i++))
-			do
-			flipCoin=$((RANDOM%2))
-			if [ $flipCoin -eq 1 ]
-				then
-				((headCount++))
-				else 
-				((tailCount++))
-			fi
-			done
-echo "the heads count is $headCount and the tails count is $tailCount" 
+flipCount=0;
+
+while [ 1 ]
+do
+((flipCount++))
+toss=$((RANDOM%2))
+echo -n "flip-$flipCount :"
+if [ $toss -eq 1 ]
+then
+	echo "Heads"
+	((headCount++))
+else
+	echo "TAILS"
+	((tailCount++))
+fi
+if [[ $tailCount -eq 21 || $headCount -eq 21 ]]
+then
+break;
+fi
+done
+echo "the head count is $headCount and the tailcount is $tailCount "
+
 if [ $headCount -gt $tailCount ]
 then
-	echo Heads is the winner
+	echo "Heads won by $(($headCount-$tailCount))"
 elif [ $headCount -lt $tailCount ]
 then
-	echo Tails is the winner
+	echo "Tails won by $(($tailCount-$headCount))"
 else 
-	echo "it's a tie"
+echo "Both are tie($headCount=$tailCount) "
 fi
 
