@@ -1,36 +1,34 @@
-#!/bin/bash 
-target_count=21;
-headCount=0;
-tailCount=0;
-flipCount=0;
-
+#!/bin/bash
+targetCount=21
+minimumDiff=2
+headsCount=0
+tailsCount=0
+flipsCount=0
 while [ 1 ]
 do
-((flipCount++))
-toss=$((RANDOM%2))
-echo -n "flip-$flipCount :"
-if [ $toss -eq 1 ]
-then
-	echo "Heads"
-	((headCount++))
-else
-	echo "TAILS"
-	((tailCount++))
-fi
-if [[ $tailCount -eq 21 || $headCount -eq 21 ]]
-then
-break;
-fi
+    (( flipsCount++ ))
+    echo -n "Flip-$flipsCount is "
+    toss=$(( RANDOM % 2 ))
+    if [ $toss -eq 1 ]
+    then
+        echo "Heads"
+        (( headsCount++ ))
+    else
+        echo "Tails"
+        (( tailsCount++ ))
+    fi
+    
+    diff_bt_hc_tc=$(( headsCount - tailsCount ))
+    diff_bt_tc_hc=$(( tailsCount - headsCount ))
+    if [[ $headsCount -eq 21 && $diff_bt_hc_tc -ge minimum_difference ]]
+    then
+        echo "Heads won by $diff_bt_hc_tc points"
+        break
+    elif [[ $tailsCount -eq 21 && $diff_bt_tc_hc -ge minimum_difference ]]
+    then
+         echo "Tails won by $diff_bt_tc_hc points"
+         break
+    fi
+    
 done
-echo "the head count is $headCount and the tailcount is $tailCount "
-
-if [ $headCount -gt $tailCount ]
-then
-	echo "Heads won by $(($headCount-$tailCount))"
-elif [ $headCount -lt $tailCount ]
-then
-	echo "Tails won by $(($tailCount-$headCount))"
-else 
-echo "Both are tie($headCount=$tailCount) "
-fi
-
+echo "The Heads count is $headsCount and Tails Count is $tailsCount"
